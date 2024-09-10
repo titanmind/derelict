@@ -1,17 +1,37 @@
+<!--
+    @file index.html
+    @description This file contains the basic HTML structure for the space-themed game.
+    
+    Key Elements:
+    - #gameMessage: A container for displaying game messages to the player
+    - #gameArea: The main container for the game's visual elements
+    
+    Note: This appears to be a partial HTML snippet, likely to be inserted into
+          a larger HTML structure. The actual <html>, <head>, and <body> tags
+          are not present in this snippet.
+    
+    Associated Files:
+    - This file is meant to work in conjunction with styles.css for styling
+    - It's also likely associated with JavaScript files like banner.js, gameState.js,
+      main.js, player.js, and ui.js for functionality
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Derelict Space Station</title>
+    <title>Derelict</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <canvas id="spaceBanner"></canvas>
     <div id="gameMessage"></div>
-    <div id="gameArea"></div>
-
+    <div id="gameArea"></div>  <!-- Map and stats will be rendered here -->
     <script src="banner.js"></script>
-    <script src="game.js"></script>
+    <script src="gameState.js"></script>
+    <script src="player.js"></script>
+    <script src="ui.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>

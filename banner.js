@@ -1,12 +1,115 @@
+/**
+ * @file banner.js
+ * @description This file creates an animated space banner using HTML5 Canvas.
+ * 
+ * Key Features:
+ * - Creates a starry background with twinkling stars
+ * - Generates shooting stars that move across the canvas
+ * - Renders a large planet with multiple orbiting moons
+ * 
+ * Classes:
+ * - Star: Represents a single star in the background
+ * - ShootingStar: Creates and animates shooting stars
+ * - Planet: Renders the main planet in the scene
+ * - Moon: Creates and animates moons orbiting the planet
+ * 
+ * Main Functions:
+ * - resizeCanvas(): Ensures the canvas is properly sized
+ * - animate(): Main animation loop that updates and draws all elements
+ * 
+ * Event Listeners:
+ * - 'resize': Calls resizeCanvas() to maintain proper canvas dimensions
+ * 
+ * Note: This script assumes the existence of a canvas element with id 'spaceBanner'
+ *       in the HTML document.
+ */
+
 const canvas = document.getElementById('spaceBanner');
 const ctx = canvas.getContext('2d');
 
 function resizeCanvas() {
-    canvas.width = 1600;
-    canvas.height = 150;
+    canvas.width = 1200;
+    canvas.height = 300;
 }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
+
+// Shutter properties
+let shutterY = -canvas.height; // Initial position (hidden above canvas)
+let shutterSpeed = 10; // Speed of shutter movement
+let isShutterClosing = false; // Controls the shutter's state (closing or opening)
+let isShutterOpening = false;
+const shutterHeight = canvas.height; // Full height of the shutter
+
+// Function to close the shutter (animate from top to bottom)
+function closeShutter() {
+    isShutterClosing = true;
+    isShutterOpening = false;
+}
+
+// Function to open the shutter (animate from bottom to top)
+function openShutter() {
+    isShutterOpening = true;
+    isShutterClosing = false;
+}
+
+function drawShutter() {
+    if (isShutterClosing && shutterY < 0) {
+        shutterY += shutterSpeed; // Move shutter down
+        if (shutterY >= 0) {
+            shutterY = 0; // Stop when it covers the banner
+            isShutterClosing = false; // Stop animation
+        }
+    } else if (isShutterOpening && shutterY > -shutterHeight) {
+        shutterY -= shutterSpeed; // Move shutter up
+        if (shutterY <= -shutterHeight) {
+            shutterY = -shutterHeight; // Fully open
+            isShutterOpening = false; // Stop animation
+        }
+    }
+
+    // Draw metallic gradient for the shutter
+    const gradient = ctx.createLinearGradient(0, shutterY, 0, shutterY + shutterHeight);
+    gradient.addColorStop(0, '#777'); // Lighter grey at the top
+    gradient.addColorStop(0.5, '#555'); // Darker grey in the middle
+    gradient.addColorStop(1, '#333'); // Even darker grey at the bottom
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, shutterY, canvas.width, shutterHeight); // Draw shutter with gradient
+
+    // Add horizontal struts (industrial look)
+    const strutHeight = 20;
+    const numberOfStruts = 5;
+    const strutSpacing = shutterHeight / numberOfStruts;
+
+    for (let i = 0; i < numberOfStruts; i++) {
+        const yPosition = shutterY + (i * strutSpacing);
+        ctx.fillStyle = '#444'; // Slightly darker grey for struts
+        ctx.fillRect(0, yPosition, canvas.width, strutHeight);
+    }
+
+    // Add rivets/bolts across the shutter
+    const numberOfRivetsX = 10; // Number of rivets across width
+    const numberOfRivetsY = 6;  // Number of rivets across height
+    const rivetRadius = 4;
+
+    for (let i = 0; i < numberOfRivetsX; i++) {
+        for (let j = 0; j < numberOfRivetsY; j++) {
+            const xPosition = (i + 1) * (canvas.width / (numberOfRivetsX + 1));
+            const yPosition = shutterY + (j + 1) * (shutterHeight / (numberOfRivetsY + 1));
+
+            // Draw rivet
+            ctx.beginPath();
+            ctx.arc(xPosition, yPosition, rivetRadius, 0, Math.PI * 2);
+            ctx.fillStyle = '#222'; // Dark grey for rivet
+            ctx.fill();
+            ctx.strokeStyle = '#000'; // Black border for rivet
+            ctx.stroke();
+        }
+    }
+}
+
+window.closeShutter = closeShutter;
+window.openShutter = openShutter;
 
 class Star {
     constructor() {
@@ -179,6 +282,8 @@ function animate() {
             moon.draw();
         }
     });
+
+    drawShutter();
 
     requestAnimationFrame(animate);
 }

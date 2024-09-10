@@ -26,38 +26,34 @@ body {
 }
 
 #gameArea {
-    flex-grow: 1;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 20px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     width: 100%;
+    padding-top: 20px;
 }
 
 #gameFlexContainer {
     display: flex;
-    gap: 20px;
     justify-content: center;
     align-items: flex-start;
+    gap: 20px;
+    width: 100%; /* Ensure the flex container takes up the full width */
     max-width: 90vw;
 }
 
 .card {
     background-color: #000;
     border: 2px solid #0ff;
-    border-radius: 10px;
+    border-radius: 0px;
     padding: 20px;
     color: #ffd54f;
 }
 
+/* Specific dimensions for each card */
 #statsCard {
-    min-width: 200px;
-    max-width: 300px;
-}
-
-#statsCard h2 {
-    color: #0ff;
-    margin-top: 0;
+    width: 300px;
 }
 
 #mapContainer {
@@ -69,26 +65,36 @@ body {
     text-align: center;
     overflow: auto;
     max-height: 80vh;
+    width: 428px; /* Define specific width for the map card */
 }
 
-#mapContainer div {
-    display: block;
-    white-space: pre;
+#localInteractionCard {
+    width: 300px; /* Twice the width of the map card */
+    height: auto;
 }
 
+/* Ensure the Global Interaction card is centered beneath the top three */
+#globalInteractionCard {
+    width: 1000px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Door styling */
 .door {
     color: #0f0;
     cursor: pointer;
 }
 
-.door:hover {
-    color: #0ff;
+.door.adjacent {
+    color: cyan !important; /* Cyan when adjacent */
 }
 
 .locked {
     color: #f00;
 }
 
+/* Button styling */
 button {
     margin-top: 10px;
     padding: 10px;
